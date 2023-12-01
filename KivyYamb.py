@@ -91,7 +91,7 @@ class MyGridLayout(GridLayout):
             self.add_widget(self.label_temp_1)
             if (i != 6) and (i != 9) and (i != 15):
                 for j in range(0, 4):
-                    self.text_input = meb.MultiExpressionButton(text="")
+                    self.text_input = MultiExpressionButton(text="")
                     self.text_input.bind(on_single_press=lambda instance, idx1=i, idx2=j: self.single_click(idx1, idx2))
                     self.text_input.bind(on_double_press=lambda instance, idx1=i, idx2=j: self.double_click(idx1, idx2))
                     self.text_input.bind(on_long_press=lambda instance, idx1=i, idx2=j: self.long_press(idx1, idx2))
