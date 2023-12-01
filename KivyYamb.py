@@ -7,11 +7,63 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.spinner import Spinner
 from kivy.uix.anchorlayout import AnchorLayout
-import multiexpressionbutton as meb
 from kivy.clock import Clock
+import timeit
 
 Builder.load_file('Yamb.kv')
 
+DOUBLE_TAP_TIME = 0.3   # Change time in seconds
+LONG_PRESSED_TIME = 0.5  # Change time in seconds
+
+
+class MultiExpressionButton(Button):
+
+    def __init__(self, **kwargs):
+        super(MultiExpressionButton, self).__init__(**kwargs)
+        self.start = 0
+        self.single_hit = 0
+        self.press_state = False
+        self.register_event_type('on_single_press')
+        self.register_event_type('on_double_press')
+        self.register_event_type('on_long_press')
+
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            self.start = timeit.default_timer()
+            if touch.is_double_tap:
+                self.press_state = True
+                self.single_hit.cancel()
+                self.dispatch('on_double_press')
+        else:
+            return super(MultiExpressionButton, self).on_touch_down(touch)
+
+    def on_touch_up(self, touch):
+        if self.press_state is False:
+            if self.collide_point(touch.x, touch.y):
+                stop = timeit.default_timer()
+                awaited = stop - self.start
+
+                def not_double(time):
+                    nonlocal awaited
+                    if awaited > LONG_PRESSED_TIME:
+                        self.dispatch('on_long_press')
+                    else:
+                        self.dispatch('on_single_press')
+
+                self.single_hit = Clock.schedule_once(not_double, DOUBLE_TAP_TIME)
+            else:
+                return super(MultiExpressionButton, self).on_touch_down(touch)
+        else:
+            self.press_state = False
+
+    def on_single_press(self):
+        pass
+
+    def on_double_press(self):
+        pass
+
+    def on_long_press(self):
+        pass
 
 class MyGridLayout(GridLayout):
     def __init__(self, **kwargs):
