@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Yamb
+title = KivyYamb
 
 # (str) Package name
 package.name = yamb
