@@ -10,7 +10,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
 import timeit
 
-Builder.load_file('Yamb.kv')
+Builder.load_file('yamb.kv')
 
 DOUBLE_TAP_TIME = 0.3   # Change time in seconds
 LONG_PRESSED_TIME = 0.5  # Change time in seconds
